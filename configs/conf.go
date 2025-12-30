@@ -9,7 +9,7 @@ const (
 	WindowTitle  = "fToDo App - a mini task manager"
 	WindowWidth  = 480
 	WindowHeight = 600
-	WindowFixed  = true
+	WindowFixed  = false
 	InitialRoute = c.List
 	InitialTheme = c.Dark
 	DbName       = "ftodo_data.db"
