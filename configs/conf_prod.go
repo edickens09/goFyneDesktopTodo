@@ -2,7 +2,7 @@
 
 package configs
 
-import c "github.com/emarifer/go-fyne-desktop-todoapp/internal/context"
+import c "goFyneDesktopTodo/internal/context"
 
 const (
 	AppId        = "ftodo_main"

@@ -3,7 +3,7 @@ package db
 import (
 	"time"
 
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/models"
+	"goFyneDesktopTodo/internal/models"
 )
 
 type IDb interface {

@@ -10,7 +10,7 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/context"
+	"goFyneDesktopTodo/internal/context"
 )
 
 func h1(text string) *canvas.Text {

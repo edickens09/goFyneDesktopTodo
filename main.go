@@ -1,6 +1,6 @@
 package main
 
-import "github.com/emarifer/go-fyne-desktop-todoapp/internal/app"
+import "goFyneDesktopTodo/internal/app"
 
 func main() {
 	a := app.NewApp()

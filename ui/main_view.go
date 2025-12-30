@@ -3,9 +3,9 @@ package ui
 import (
 	"fmt"
 
-	"github.com/emarifer/go-fyne-desktop-todoapp/configs"
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/models"
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/services"
+	"goFyneDesktopTodo/configs"
+	"goFyneDesktopTodo/internal/models"
+	"goFyneDesktopTodo/internal/services"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -14,7 +14,7 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 
-	c "github.com/emarifer/go-fyne-desktop-todoapp/internal/context"
+	c "goFyneDesktopTodo/internal/context"
 )
 
 type tappableEntry struct {

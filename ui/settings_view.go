@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"net/url"
 
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/services"
+	"goFyneDesktopTodo/internal/services"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -13,7 +13,7 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 
-	c "github.com/emarifer/go-fyne-desktop-todoapp/internal/context"
+	c "goFyneDesktopTodo/internal/context"
 )
 
 func GetSettingsView(ctx *c.AppContext) *fyne.Container {

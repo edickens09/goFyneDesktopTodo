@@ -5,16 +5,16 @@ import (
 	"image/color"
 	"log"
 
-	"github.com/emarifer/go-fyne-desktop-todoapp/configs"
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/db"
-	"github.com/emarifer/go-fyne-desktop-todoapp/ui"
+	"goFyneDesktopTodo/configs"
+	"goFyneDesktopTodo/internal/db"
+	"goFyneDesktopTodo/ui"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/theme"
 
-	c "github.com/emarifer/go-fyne-desktop-todoapp/internal/context"
+	c "goFyneDesktopTodo/internal/context"
 )
 
 type forcedVariant struct {

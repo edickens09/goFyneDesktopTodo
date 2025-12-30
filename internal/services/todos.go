@@ -3,8 +3,8 @@ package services
 import (
 	"time"
 
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/db"
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/models"
+	"goFyneDesktopTodo/internal/db"
+	"goFyneDesktopTodo/internal/models"
 
 	"fyne.io/fyne/v2/data/binding"
 )

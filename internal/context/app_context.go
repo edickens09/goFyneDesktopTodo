@@ -3,7 +3,7 @@ package context
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/data/binding"
-	"github.com/emarifer/go-fyne-desktop-todoapp/internal/db"
+	"goFyneDesktopTodo/internal/db"
 )
 
 type AppContext struct {
