@@ -26,7 +26,7 @@ func GetSettingsView(ctx *c.AppContext) *fyne.Container {
 	errMsg := newFlashTxtPlaceholder()
 	msg := container.NewStack(successMsg, errMsg)
 
-	navigateBackBtn := navigateBtn(ctx, theme.NavigateBackIcon(), c.List)
+	navigateBackBtn := navigateBtn(ctx, theme.NavigateBackIcon(), c.List, "")
 
 	left := container.NewBorder(nil, navigateBackBtn, nil, nil)
 

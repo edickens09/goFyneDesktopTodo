@@ -21,10 +21,11 @@ type tappableEntry struct {
 	widget.Entry
 }
 
+//this is where the info lives on the app. Change info? Get rid of? Unsure what to do with
 func newTappableEntry() *tappableEntry {
 	e := &tappableEntry{
 		widget.Entry{
-			PlaceHolder: "Display",
+			PlaceHolder: "Shrink this for today button?",
 			TextStyle:   fyne.TextStyle{Monospace: true},
 		},
 	}
@@ -91,7 +92,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 
 	// Setup Widgets
 	input := widget.NewEntry()
-	input.PlaceHolder = "New TODO description…"
+	input.PlaceHolder = "Maybe today button shoudl go on this line?"
 	addBtn := widget.NewButtonWithIcon(
 		"Add", theme.DocumentCreateIcon(), func() {
 			t := models.NewTodo(input.Text)
@@ -107,6 +108,10 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 			addBtn.Enable()
 		}
 	}
+
+	// today button, needs to be implimented only a placeholder right now
+	// how can I make it say text?
+	todayBtn := navigateBtn(ctx, theme.ListIcon(), c.Settings, "Today")
 
 	displayText := newTappableEntry()
 
@@ -128,7 +133,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		},
 	)
 
-	settingsBtn := navigateBtn(ctx, theme.SettingsIcon(), c.Settings)
+	settingsBtn := navigateBtn(ctx, theme.SettingsIcon(), c.Settings, "")
 
 	bottomCont := container.NewBorder(nil, nil, nil, settingsBtn, deleteBtn)
 
@@ -150,16 +155,16 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 			fmt.Printf("Selected item: %d\n", id)
 		}
 	}
-
+	// the directions are not important the order is important
 	return container.NewBorder(
 		nil, // TOP of the container
 		// this will be a the BOTTOM of the container
 		container.NewBorder(
-			displayText, // TOP
+			container.NewBorder (nil, nil, nil, todayBtn, displayText),    //TOP
 			bottomCont,  // BOTTOM
 			nil,         // LEFT
 			addBtn,      // RIGHT
-			input,       // take the rest of the space ↓
+			input,       // take the rest of the space
 		),
 		nil,  // Left
 		nil,  // Right
