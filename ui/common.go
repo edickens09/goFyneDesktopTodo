@@ -78,7 +78,7 @@ func flasMessage(
 	}()
 }
 
-//this is the button used for navigation, can I adapt this so that it works for the today route?
+//this is the button used for navigation, added string to the end so that can add names to the navigation buttons
 func navigateBtn(
 	ctx *context.AppContext, icon fyne.Resource, route context.AppRoute, name string,
 ) *widget.Button {

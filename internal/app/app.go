@@ -73,6 +73,7 @@ func NewApp() App {
 		views: map[c.AppRoute]func() *fyne.Container{
 			c.List:     func() *fyne.Container { return ui.GetMainView(&ctx) },
 			c.Settings: func() *fyne.Container { return ui.GetSettingsView(&ctx) },
+			c.Today:    func() *fyne.Container { return ui.GetTodayView(&ctx) },
 		},
 	}
 }

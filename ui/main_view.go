@@ -22,10 +22,11 @@ type tappableEntry struct {
 }
 
 //this is where the info lives on the app. Change info? Get rid of? Unsure what to do with
+//Don't forget there is an area down below that sets this back to display when it gets cleared
 func newTappableEntry() *tappableEntry {
 	e := &tappableEntry{
 		widget.Entry{
-			PlaceHolder: "Shrink this for today button?",
+			PlaceHolder: "What should I do with this?",
 			TextStyle:   fyne.TextStyle{Monospace: true},
 		},
 	}
@@ -92,7 +93,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 
 	// Setup Widgets
 	input := widget.NewEntry()
-	input.PlaceHolder = "Maybe today button shoudl go on this line?"
+	input.PlaceHolder = "Maybe today button should go on this line?"
 	addBtn := widget.NewButtonWithIcon(
 		"Add", theme.DocumentCreateIcon(), func() {
 			t := models.NewTodo(input.Text)
@@ -111,7 +112,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 
 	// today button, needs to be implimented only a placeholder right now
 	// how can I make it say text?
-	todayBtn := navigateBtn(ctx, theme.ListIcon(), c.Settings, "Today")
+	todayBtn := navigateBtn(ctx, theme.ListIcon(), c.Today, "Today")
 
 	displayText := newTappableEntry()
 
