@@ -35,6 +35,7 @@ func newTappableEntry() *tappableEntry {
 	return e
 }
 
+//I'm not sure what this does yet
 func (e *tappableEntry) Tapped(_ *fyne.PointEvent) {
 	e.Disable()
 }
@@ -51,6 +52,7 @@ func renderListItem() fyne.CanvasObject {
 	)
 }
 
+//I believe this is where the work is being done for the individual list items
 func bindDataToList(
 	displayText *tappableEntry, todos *services.Todos, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
@@ -75,10 +77,12 @@ func bindDataToList(
 				displayText.SetText(fmt.Sprintf("%q has been successfully removed!", t.Description))
 			}, w)
 		}
-
+		
+		//I'm not entirely sure what is happening here, but it is somehow binding the list object item to the database object
 		l.Bind(binding.BindString(&t.Description))
 		c.Bind(binding.BindBool(&t.Done))
-
+		
+		//this is where the todo item show is being updated based on whether the button is clicked
 		l.Truncation = fyne.TextTruncateEllipsis
 		c.OnChanged = func(b bool) {
 			t.Done = b
@@ -93,7 +97,14 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 
 	// Setup Widgets
 	input := widget.NewEntry()
-	input.PlaceHolder = "Maybe today button should go on this line?"
+	input.PlaceHolder = "New Task...."
+	input.OnSubmitted = func(s string) {
+		if len(s) > 2 {
+			t := models.NewTodo(input.Text)
+			todos.Add(&t)
+			input.SetText("")
+		}
+	}
 	addBtn := widget.NewButtonWithIcon(
 		"Add", theme.DocumentCreateIcon(), func() {
 			t := models.NewTodo(input.Text)

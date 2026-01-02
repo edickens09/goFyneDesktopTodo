@@ -13,6 +13,10 @@ type Todo struct {
 	Description string
 	Done        bool
 	CreatedAt   time.Time
+	/* adding items here that I want as part of each Todo, look into how to impliment later
+	Trash       bool
+	Today       bool
+	*/
 }
 
 func NewTodo(description string) Todo {
