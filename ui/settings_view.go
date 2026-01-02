@@ -19,7 +19,7 @@ import (
 func GetSettingsView(ctx *c.AppContext) *fyne.Container {
 	// Get data from the DB and bind it to an UntypedList
 	todos := services.NewTodosFromDb(ctx.Db)
-	url, _ := url.Parse("https://github.com/emarifer/go-fyne-desktop-todoapp")
+	url, _ := url.Parse("https://github.com/edickens09/goFyneDesktopTodo")
 
 	// Setup Widgets
 	successMsg := newFlashTxtPlaceholder()
@@ -61,7 +61,7 @@ func GetSettingsView(ctx *c.AppContext) *fyne.Container {
 	)
 
 	link := widget.NewHyperlinkWithStyle(
-		"https://github.com/emarifer/go-fyne-desktop-todoapp",
+		"https://github.com/edickens09/goFyneDesktopTodo",
 		url,
 		fyne.TextAlignCenter,
 		fyne.TextStyle{Bold: true, Italic: true},
