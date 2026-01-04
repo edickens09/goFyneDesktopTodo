@@ -45,6 +45,7 @@ func MakeDb(DbName string) Db {
 			id TEXT NOT NULL PRIMARY KEY,
 			description TEXT NOT NULL,
 			done BOOLEAN DEFAULT(FALSE),
+			trash BOOLEAN DEFAULT(FALSE),
 			created_at DATE DEFAULT (datetime('now','localtime'))
 			);`, FTODO_TABLE_NAME,
 	)
@@ -88,7 +89,7 @@ func (db *Db) InsertTodo(todo *models.Todo) (*time.Time, bool) {
 func (db *Db) GetAllTodos() []models.Todo {
 	todos := []models.Todo{}
 
-	query := fmt.Sprintf("SELECT * FROM %s", FTODO_TABLE_NAME)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE NOT trash", FTODO_TABLE_NAME)
 
 	rows, err := db.db.Query(query)
 	if err != nil {
@@ -100,7 +101,7 @@ func (db *Db) GetAllTodos() []models.Todo {
 	t := models.Todo{}
 
 	for rows.Next() {
-		rows.Scan(&t.Id, &t.Description, &t.Done, &t.CreatedAt)
+		rows.Scan(&t.Id, &t.Description, &t.Done, &t.Trash, &t.CreatedAt)
 
 		todos = append(todos, t)
 	}
@@ -268,6 +269,29 @@ func convertToDatetime(s string) time.Time {
 		log.Fatal(err)
 	}
 	return date
+}
+
+func (db *Db) MoveToTrash(todo *models.Todo) bool {
+	
+	query := fmt.Sprintf(`Update %s SET trash = ?
+		WHERE id=?`, FTODO_TABLE_NAME)
+
+	stmt, err := db.db.Prepare(query)
+	if err != nil {
+		return err == nil
+	}
+	
+	defer stmt.Close()
+
+	_, err = stmt.Exec(todo.Trash, todo.Id)
+
+	if err != nil {
+		return err == nil
+	}
+
+	return true
+
+
 }
 
 /* REFERENCES:

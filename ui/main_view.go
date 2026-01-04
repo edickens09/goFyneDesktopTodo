@@ -68,8 +68,11 @@ func bindDataToList(
 				if !b {
 					return
 				}
+				//todos.Remove is what removes it from the displayed list. other moves it to trash
 				todos.Remove(t)
-				todos.Dbase.DeleteTodo(t)
+				t.Trash = true
+				todos.Dbase.MoveToTrash(t)
+				//todos.Dbase.DeleteTodo(t)
 
 				if configs.EnableLogger {
 					fmt.Printf("The ToDo with description %q has been successfully removed!\n", t.Description)
@@ -121,9 +124,9 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		}
 	}
 
-	// today button, needs to be implimented only a placeholder right now
-	// how can I make it say text?
+	// Implementing my navigation buttons here
 	todayBtn := navigateBtn(ctx, theme.ListIcon(), c.Today, "Today")
+	trashBtn := navigateBtn(ctx, theme.DeleteIcon(), c.Trash, "Trash")
 
 	displayText := newTappableEntry()
 
@@ -147,7 +150,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 
 	settingsBtn := navigateBtn(ctx, theme.SettingsIcon(), c.Settings, "")
 
-	bottomCont := container.NewBorder(nil, nil, nil, settingsBtn, deleteBtn)
+	bottomCont := container.NewBorder(nil, nil, deleteBtn, settingsBtn, trashBtn)
 
 	list := widget.NewListWithData(
 		// the binding.List type

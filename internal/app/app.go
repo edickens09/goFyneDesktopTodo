@@ -74,6 +74,7 @@ func NewApp() App {
 			c.List:     func() *fyne.Container { return ui.GetMainView(&ctx) },
 			c.Settings: func() *fyne.Container { return ui.GetSettingsView(&ctx) },
 			c.Today:    func() *fyne.Container { return ui.GetTodayView(&ctx) },
+			c.Trash:    func() *fyne.Container { return ui.GetTrashView(&ctx) },
 		},
 	}
 }

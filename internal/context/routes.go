@@ -10,6 +10,7 @@ const (
 	list     string = "LIST"
 	settings string = "SETTINGS"
 	today    string = "TODAY"
+	trash    string = "TRASH"
 	invalid  string = "INVALID_ROUTE"
 )
 
@@ -17,6 +18,7 @@ const (
 	List AppRoute = iota
 	Settings
 	Today
+	Trash
 )
 
 func getMapping() map[AppRoute]string {
@@ -25,6 +27,7 @@ func getMapping() map[AppRoute]string {
 		List:     list,
 		Settings: settings,
 		Today:    today,
+		Trash:    trash,
 	}
 }
 
@@ -34,6 +37,7 @@ func getReverseMapping() map[string]AppRoute {
 		list:     List,
 		settings: Settings,
 		today:    Today,
+		trash:    Trash,
 	}
 }
 
