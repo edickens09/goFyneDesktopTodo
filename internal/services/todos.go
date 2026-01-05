@@ -20,6 +20,12 @@ func NewTodosFromDb(db db.IDb) Todos {
 	return newTodos(db, todoList)
 }
 
+func TrashTodosFromDb(db db.IDb) Todos {
+	trashList := db.GetAllTrash()
+
+	return newTodos(db, trashList)
+}
+
 func newTodos(db db.IDb, todos []models.Todo) Todos {
 	t := Todos{
 		binding.NewUntypedList(),

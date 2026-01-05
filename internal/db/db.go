@@ -109,6 +109,29 @@ func (db *Db) GetAllTodos() []models.Todo {
 	return todos
 }
 
+func (db *Db) GetAllTrash() []models.Todo {
+	todos := []models.Todo{}
+
+	query := fmt.Sprintf("SELECT * FROM %s WHERE trash", FTODO_TABLE_NAME)
+
+	rows, err := db.db.Query(query)
+	if err != nil {
+		return todos
+	}
+
+	defer rows.Close()
+
+	t := models.Todo{}
+
+	for rows.Next() {
+		rows.Scan(&t.Id, &t.Description, &t.Done, &t.Trash, &t.CreatedAt)
+
+		todos = append(todos, t)
+	}
+
+	return todos
+}
+
 func (db *Db) UpdateTodo(todo *models.Todo) bool {
 	query := fmt.Sprintf(`UPDATE %s SET done = ?
 		WHERE id=?`, FTODO_TABLE_NAME)

@@ -52,10 +52,11 @@ func renderListItem() fyne.CanvasObject {
 	)
 }
 
-//I believe this is where the work is being done for the individual list items
+// I believe this is where the work is being done for the individual list items
 func bindDataToList(
 	displayText *tappableEntry, todos *services.Todos, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
+
 	return func(di binding.DataItem, co fyne.CanvasObject) {
 		t := models.NewTodoFromDataItem(di)
 		ctr, _ := co.(*fyne.Container)
