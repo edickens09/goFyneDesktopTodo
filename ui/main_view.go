@@ -53,8 +53,7 @@ func renderListItem() fyne.CanvasObject {
 }
 
 // I believe this is where the work is being done for the individual list items
-func bindDataToList(
-	displayText *tappableEntry, todos *services.Todos, w fyne.Window,
+func bindDataToList(todos *services.Todos, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
 
 	return func(di binding.DataItem, co fyne.CanvasObject) {
@@ -78,7 +77,6 @@ func bindDataToList(
 				if configs.EnableLogger {
 					fmt.Printf("The ToDo with description %q has been successfully removed!\n", t.Description)
 				}
-				displayText.SetText(fmt.Sprintf("%q has been successfully removed!", t.Description))
 			}, w)
 		}
 		
@@ -161,16 +159,14 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		renderListItem,
 		// func that is called for each item in the list and allows
 		// but this time we get the actual DataItem we need to cast
-		bindDataToList(displayText, &todos, ctx.GetWindow()),
+		bindDataToList(&todos, ctx.GetWindow()),
 	)
 	list.OnSelected = func(id widget.ListItemID) {
-		t := todos.All()
-		displayText.SetText(t[id].String())
-		displayText.Enable()
 		if configs.EnableLogger {
 			fmt.Printf("Selected item: %d\n", id)
 		}
 	}
+
 	// the directions are not important the order is important
 	return container.NewBorder(
 		nil, // TOP of the container
