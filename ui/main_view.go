@@ -100,6 +100,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 	// Setup Widgets
 	input := widget.NewEntry()
 	input.PlaceHolder = "New Task...."
+	// here is where the enter key function exists
 	input.OnSubmitted = func(s string) {
 		if len(s) > 2 {
 			t := models.NewTodo(input.Text)
@@ -124,10 +125,8 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 	}
 
 	// Implementing my navigation buttons here
-	todayBtn := navigateBtn(ctx, theme.ListIcon(), c.Today, "Today")
+	todayBtn := navigateBtn(ctx, theme.ListIcon(), c.Today, "Today Tasks")
 	trashBtn := navigateBtn(ctx, theme.DeleteIcon(), c.Trash, "Trash")
-
-	displayText := newTappableEntry()
 
 	deleteBtn := widget.NewButtonWithIcon(
 		"Reset", theme.ViewRefreshIcon(), func() {
@@ -140,8 +139,6 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 					}
 
 					todos.Drop()
-
-					displayText.SetText("Display")
 				}, ctx.GetWindow(),
 			)
 		},
@@ -149,7 +146,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 
 	settingsBtn := navigateBtn(ctx, theme.SettingsIcon(), c.Settings, "")
 
-	bottomCont := container.NewBorder(nil, nil, deleteBtn, settingsBtn, trashBtn)
+	bottomCont := container.NewBorder(nil, nil, deleteBtn, trashBtn, todayBtn)
 
 	list := widget.NewListWithData(
 		// the binding.List type
@@ -172,9 +169,9 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		nil, // TOP of the container
 		// this will be a the BOTTOM of the container
 		container.NewBorder(
-			container.NewBorder (nil, nil, nil, todayBtn, displayText),    //TOP
+			nil,//container.NewBorder (nil, nil, nil, todayBtn, nil),    //TOP
 			bottomCont,  // BOTTOM
-			nil,         // LEFT
+			settingsBtn,         // LEFT
 			addBtn,      // RIGHT
 			input,       // take the rest of the space
 		),
