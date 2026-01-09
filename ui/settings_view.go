@@ -12,6 +12,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"fyne.io/fyne/v2/dialog"
 
 	c "goFyneDesktopTodo/internal/context"
 )
@@ -54,7 +55,23 @@ func GetSettingsView(ctx *c.AppContext) *fyne.Container {
 		},
 	)
 
+	resetBtn := widget.NewButtonWithIcon(
+		"Reset", theme.ViewRefreshIcon(), func() {
+			dialog.ShowConfirm(
+				"Confirmation",
+				"This will delete all data from the app. Are you Sure? This action is irreversible.",
+				func(b bool) {
+					if !b {
+						return
+					}
+					todos.Drop()
+				}, ctx.GetWindow(),
+			)
+		},
+	)
+
 	settingsManagement := container.NewVBox(
+		resetBtn,
 		toggleThemeBtn,
 		importDataBtn,
 		exportDataBtn,

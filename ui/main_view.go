@@ -128,25 +128,9 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 	todayBtn := navigateBtn(ctx, theme.ListIcon(), c.Today, "Today Tasks")
 	trashBtn := navigateBtn(ctx, theme.DeleteIcon(), c.Trash, "Trash")
 
-	deleteBtn := widget.NewButtonWithIcon(
-		"Reset", theme.ViewRefreshIcon(), func() {
-			dialog.ShowConfirm(
-				"Confirmation",
-				"Are you sure you want to delete all the data you have saved? This action is irreversible!!",
-				func(b bool) {
-					if !b {
-						return
-					}
-
-					todos.Drop()
-				}, ctx.GetWindow(),
-			)
-		},
-	)
-
 	settingsBtn := navigateBtn(ctx, theme.SettingsIcon(), c.Settings, "")
 
-	bottomCont := container.NewBorder(nil, nil, deleteBtn, trashBtn, todayBtn)
+	bottomCont := container.NewBorder(nil, nil, settingsBtn, trashBtn, todayBtn)
 
 	list := widget.NewListWithData(
 		// the binding.List type
@@ -171,7 +155,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		container.NewBorder(
 			nil,//container.NewBorder (nil, nil, nil, todayBtn, nil),    //TOP
 			bottomCont,  // BOTTOM
-			settingsBtn,         // LEFT
+			nil,         // LEFT
 			addBtn,      // RIGHT
 			input,       // take the rest of the space
 		),
