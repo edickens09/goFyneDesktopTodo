@@ -44,7 +44,7 @@ func MakeDb(DbName string) Db {
 		`CREATE TABLE IF NOT EXISTS %s (
 			id TEXT NOT NULL PRIMARY KEY,
 			description TEXT NOT NULL,
-			done BOOLEAN DEFAULT(FALSE),
+			selected BOOLEAN DEFAULT(FALSE),
 			trash BOOLEAN DEFAULT(FALSE),
 			created_at DATE DEFAULT (datetime('now','localtime'))
 			);`, FTODO_TABLE_NAME,
@@ -101,7 +101,7 @@ func (db *Db) GetAllTodos() []models.Todo {
 	t := models.Todo{}
 
 	for rows.Next() {
-		rows.Scan(&t.Id, &t.Description, &t.Done, &t.Trash, &t.CreatedAt)
+		rows.Scan(&t.Id, &t.Description, &t.Selected, &t.Trash, &t.CreatedAt)
 
 		todos = append(todos, t)
 	}
@@ -124,7 +124,7 @@ func (db *Db) GetAllTrash() []models.Todo {
 	t := models.Todo{}
 
 	for rows.Next() {
-		rows.Scan(&t.Id, &t.Description, &t.Done, &t.Trash, &t.CreatedAt)
+		rows.Scan(&t.Id, &t.Description, &t.Selected, &t.Trash, &t.CreatedAt)
 
 		todos = append(todos, t)
 	}
@@ -143,7 +143,7 @@ func (db *Db) UpdateTodo(todo *models.Todo) bool {
 
 	defer stmt.Close()
 
-	_, err = stmt.Exec(todo.Done, todo.Id)
+	_, err = stmt.Exec(todo.Selected, todo.Id)
 	if err != nil {
 		return err == nil
 	}
@@ -244,7 +244,7 @@ func (db *Db) ImportData() bool {
 		return err == nil
 	}
 
-	sqlStr := fmt.Sprintf("INSERT INTO %s(id, description, done, created_at) VALUES ", FTODO_TABLE_NAME)
+	sqlStr := fmt.Sprintf("INSERT INTO %s(id, description, selected, created_at) VALUES ", FTODO_TABLE_NAME)
 	vals := []interface{}{}
 
 	for _, row := range rowsMap {
@@ -253,7 +253,7 @@ func (db *Db) ImportData() bool {
 			vals,
 			uuid.NewString(),
 			row["description"],
-			convertToBool(row["done"]),
+			convertToBool(row["selected"]),
 			convertToDatetime(row["created_at"]),
 		)
 	}

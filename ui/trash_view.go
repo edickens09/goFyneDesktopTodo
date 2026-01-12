@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
 
 	"goFyneDesktopTodo/internal/services"
 	"goFyneDesktopTodo/internal/models"
@@ -16,23 +17,15 @@ import (
 	c "goFyneDesktopTodo/internal/context"
 )
 
+// right now I don't know how to add extra buttons to the area in the container and it not throw an error when returning the CanvasObject
 func RenderListItemsTrash() fyne.CanvasObject {
-	/*
-	rightCon := container.NewBorder(
-		nil, nil,
-		widget.NewButtonWithIcon("", theme.DeleteIcon(), nil),
 
-		widget.NewButtonWithIcon("", theme.ViewRefreshIcon(), nil),
-
-		nil,
-		) */
-	return container.NewBorder(
-		nil, nil,
-		widget.NewCheck("", nil),
-		
-		widget.NewButtonWithIcon("", theme.DeleteIcon(), nil),
-
+	return container.NewHBox(
+		widget.NewCheck("", nil), //left
 		widget.NewLabel(""),
+		layout.NewSpacer(),
+		widget.NewButtonWithIcon("", theme.ViewRefreshIcon(), nil),
+		widget.NewButtonWithIcon("", theme.DeleteIcon(), nil),
 		)
 }
 
@@ -44,9 +37,9 @@ func BindItemsToListTrash(todos *services.Todos, w fyne.Window,
 		t := models.NewTodoFromDataItem(di)
 		ctr, _ := co.(*fyne.Container)
 
-		l := ctr.Objects[0].(*widget.Label)
-		c := ctr.Objects[1].(*widget.Check)
-		ctr.Objects[2].(*widget.Button).OnTapped = func() {
+		c := ctr.Objects[0].(*widget.Check)
+		l := ctr.Objects[1].(*widget.Label)
+		ctr.Objects[4].(*widget.Button).OnTapped = func() {
 			msg := fmt.Sprintf("Are you sure you want to permanently delete the task with Description %q", t.Description)
 			dialog.ShowConfirm("Confirmation", msg, func(b bool) {
 
@@ -59,12 +52,33 @@ func BindItemsToListTrash(todos *services.Todos, w fyne.Window,
 			
 			}, w)
 		}
-		l.Bind(binding.BindString(&t.Description))
-		c.Bind(binding.BindBool(&t.Done))
+		// putting a button here for future use
+		ctr.Objects[3].(*widget.Button).OnTapped = func() { 
+			msg:= fmt.Sprintf("This button works %q", t.Description)
+			dialog.ShowConfirm("Confirmation", msg, func(b bool){
+				if !b {
+					return
+				}
+			}, w)
+		}
+		
+		/* I think there is a better way impliment this that is more dynamic but this seems 
+		to work on my laptop in half screen mode so that is good enough for now */
+		if (len(t.Description) > 60) {
 
-		l.Truncation = fyne.TextTruncateEllipsis
+			ellip := t.Description[:60] +"..."
+
+			l.Bind(binding.BindString(&ellip))
+
+		}else {
+			l.Bind(binding.BindString(&t.Description))
+		}
+
+		c.Bind(binding.BindBool(&t.Selected))
+
+		//l.Truncation = fyne.TextTruncateEllipsis
 		c.OnChanged = func(b bool) {
-			t.Done = b
+			t.Selected = b
 			todos.Dbase.UpdateTodo(t)
 		}
 

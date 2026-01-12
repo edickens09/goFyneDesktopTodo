@@ -11,7 +11,7 @@ import (
 type Todo struct {
 	Id          string
 	Description string
-	Done        bool
+	Selected        bool
 	CreatedAt   time.Time
 	// adding items here that I want as part of each Todo, look into how to impliment later
 	Trash       bool
@@ -29,7 +29,7 @@ func NewTodoFromDataItem(di binding.DataItem) *Todo {
 
 func (t Todo) String() string {
 	done := "❌"
-	if t.Done {
+	if t.Selected {
 		done = "✅"
 	}
 

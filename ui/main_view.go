@@ -82,12 +82,12 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 		
 		//I'm not entirely sure what is happening here, but it is somehow binding the list object item to the database object
 		l.Bind(binding.BindString(&t.Description))
-		c.Bind(binding.BindBool(&t.Done))
+		c.Bind(binding.BindBool(&t.Selected))
 		
 		//this is where the todo item show is being updated based on whether the button is clicked
 		l.Truncation = fyne.TextTruncateEllipsis
 		c.OnChanged = func(b bool) {
-			t.Done = b
+			t.Selected = b
 			todos.Dbase.UpdateTodo(t)
 		}
 	}
