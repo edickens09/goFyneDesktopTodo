@@ -21,8 +21,7 @@ type tappableEntry struct {
 	widget.Entry
 }
 
-//this is where the info lives on the app. Change info? Get rid of? Unsure what to do with
-//Don't forget there is an area down below that sets this back to display when it gets cleared
+//This is no longer implemented
 func newTappableEntry() *tappableEntry {
 	e := &tappableEntry{
 		widget.Entry{
@@ -52,7 +51,7 @@ func renderListItem() fyne.CanvasObject {
 	)
 }
 
-// I believe this is where the work is being done for the individual list items
+// This is where we take the base List item and then Bind the data to that singular item
 func bindDataToList(todos *services.Todos, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
 
@@ -71,8 +70,7 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 				//todos.Remove is what removes it from the displayed list. other moves it to trash
 				todos.Remove(t)
 				t.Trash = true
-				todos.Dbase.MoveToTrash(t)
-				//todos.Dbase.DeleteTodo(t)
+				todos.Dbase.UpdateTrash(t)
 
 				if configs.EnableLogger {
 					fmt.Printf("The ToDo with description %q has been successfully removed!\n", t.Description)
@@ -92,6 +90,12 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 		}
 	}
 }
+// Function created so that OnSubmit and Add button add information in the same way.
+func AddToList(todos *services.Todos, input *widget.Entry) {
+	t := models.NewTodo(input.Text)
+	todos.Add(&t)
+	input.SetText("")
+}
 
 func GetMainView(ctx *c.AppContext) *fyne.Container {
 	// Get data from the DB and bind it to an UntypedList
@@ -103,16 +107,13 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 	// here is where the enter key function exists
 	input.OnSubmitted = func(s string) {
 		if len(s) > 2 {
-			t := models.NewTodo(input.Text)
-			todos.Add(&t)
-			input.SetText("")
+			AddToList(&todos, input)
 		}
 	}
 	addBtn := widget.NewButtonWithIcon(
 		"Add", theme.DocumentCreateIcon(), func() {
-			t := models.NewTodo(input.Text)
-			todos.Add(&t)
-			input.SetText("")
+			AddToList(&todos, input)
+
 		},
 	)
 	addBtn.Disable()

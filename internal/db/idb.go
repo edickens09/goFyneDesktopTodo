@@ -15,6 +15,6 @@ type IDb interface {
 	ImportData() bool
 	InsertTodo(todo *models.Todo) (*time.Time, bool)
 	UpdateTodo(todo *models.Todo) bool
-	MoveToTrash(todo *models.Todo) bool
+	UpdateTrash(todo *models.Todo) bool
 	GetAllTrash() []models.Todo
 }

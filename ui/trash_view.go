@@ -54,11 +54,16 @@ func BindItemsToListTrash(todos *services.Todos, w fyne.Window,
 		}
 		// putting a button here for future use
 		ctr.Objects[3].(*widget.Button).OnTapped = func() { 
-			msg:= fmt.Sprintf("This button works %q", t.Description)
-			dialog.ShowConfirm("Confirmation", msg, func(b bool){
+			msg:= fmt.Sprintf("Are you sure you want to restore %q?", t.Description)
+			dialog.ShowConfirm("Confirmation", msg, func(b bool) {
+
 				if !b {
 					return
 				}
+
+				todos.Remove(t)
+				t.Trash = false
+				todos.Dbase.UpdateTrash(t)
 			}, w)
 		}
 		

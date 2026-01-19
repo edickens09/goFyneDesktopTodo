@@ -294,7 +294,7 @@ func convertToDatetime(s string) time.Time {
 	return date
 }
 
-func (db *Db) MoveToTrash(todo *models.Todo) bool {
+func (db *Db) UpdateTrash(todo *models.Todo) bool {
 	
 	query := fmt.Sprintf(`Update %s SET trash = ?
 		WHERE id=?`, FTODO_TABLE_NAME)
