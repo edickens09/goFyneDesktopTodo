@@ -26,6 +26,12 @@ func TrashTodosFromDb(db db.IDb) Todos {
 	return newTodos(db, trashList)
 }
 
+func TodayTodosFromDb(db db.IDb) Todos {
+	todayList := db.GetAllToday()
+
+	return newTodos(db, todayList)
+}
+
 func newTodos(db db.IDb, todos []models.Todo) Todos {
 	t := Todos{
 		binding.NewUntypedList(),

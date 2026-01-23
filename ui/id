@@ -13,7 +13,6 @@ import (
 	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-	"fyne.io/fyne/v2/layout"
 
 	c "goFyneDesktopTodo/internal/context"
 )
@@ -37,19 +36,10 @@ func newTappableEntry() *tappableEntry {
 
 func (e *tappableEntry) Tapped(_ *fyne.PointEvent) {
 	e.Disable()
-}
-*/
+} */
 
 func renderListItem() fyne.CanvasObject {
-
-	return container.NewHBox(
-		widget.NewCheck("", nil),
-		widget.NewLabel(""),
-		layout.NewSpacer(),
-		widget.NewButtonWithIcon("", theme.ContentAddIcon(), nil),
-		widget.NewButtonWithIcon("", theme.DeleteIcon(), nil),
-		)
-/*	return container.NewBorder(
+	return container.NewBorder(
 		nil, nil, // Top & bottom
 		// ↓ left of the border ↓
 		widget.NewCheck("", nil), // func(b bool) {}
@@ -57,7 +47,7 @@ func renderListItem() fyne.CanvasObject {
 		widget.NewButtonWithIcon("", theme.DeleteIcon(), nil),
 		// take the rest of the space ↓
 		widget.NewLabel(""),
-	) */	
+	)
 }
 
 // This is where we take the base List item and then Bind the data to that singular item
@@ -68,9 +58,9 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 		t := models.NewTodoFromDataItem(di)
 		ctr, _ := co.(*fyne.Container)
 
-		c := ctr.Objects[0].(*widget.Check)
-		l := ctr.Objects[1].(*widget.Label)
-		ctr.Objects[4].(*widget.Button).OnTapped = func() {
+		l := ctr.Objects[0].(*widget.Label)
+		c := ctr.Objects[1].(*widget.Check)
+		ctr.Objects[2].(*widget.Button).OnTapped = func() {
 			msg := fmt.Sprintf("Are you sure you want to delete the task with Description %q?", t.Description)
 			dialog.ShowConfirm("Confirmation", msg, func(b bool) {
 				if !b {
@@ -82,32 +72,17 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 				todos.Dbase.UpdateTrash(t)
 
 				if configs.EnableLogger {
-					fmt.Printf("The ToDo %q has been successfully moved to trash!\n", t.Description)
+					fmt.Printf("The ToDo with description %q has been successfully removed!\n", t.Description)
 				}
 			}, w)
 		}
-
-		ctr.Objects[3].(*widget.Button).OnTapped = func() {
-			t.Today = true
-			todos.Dbase.UpdateToday(t)
-
-			if configs.EnableLogger {
-				fmt.Printf("The ToDo %q has been successfully added to today\n", t.Description)
-			}
-		}
 		
-		//binding the label to the todo item descriptin
-		if (len(t.Description) > 60) {
-			ellip := t.Description[:60] + "..."
-			l.Bind(binding.BindString(&ellip))
-		}else {
-			l.Bind(binding.BindString(&t.Description))
-		}
-		
-		//binding the check to the todo item selection
+		//I'm not entirely sure what is happening here, but it is somehow binding the list object item to the database object
+		l.Bind(binding.BindString(&t.Description))
 		c.Bind(binding.BindBool(&t.Selected))
 		
 		//this is where the todo item show is being updated based on whether the button is clicked
+		l.Truncation = fyne.TextTruncateEllipsis
 		c.OnChanged = func(b bool) {
 			t.Selected = b
 			todos.Dbase.UpdateTodo(t)

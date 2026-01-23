@@ -17,4 +17,6 @@ type IDb interface {
 	UpdateTodo(todo *models.Todo) bool
 	UpdateTrash(todo *models.Todo) bool
 	GetAllTrash() []models.Todo
+	GetAllToday() []models.Todo
+	UpdateToday(todo *models.Todo) bool
 }

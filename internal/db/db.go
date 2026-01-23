@@ -46,6 +46,7 @@ func MakeDb(DbName string) Db {
 			description TEXT NOT NULL,
 			selected BOOLEAN DEFAULT(FALSE),
 			trash BOOLEAN DEFAULT(FALSE),
+			today BOOLEAN DEFAULT(FALSE),
 			created_at DATE DEFAULT (datetime('now','localtime'))
 			);`, FTODO_TABLE_NAME,
 	)
@@ -101,7 +102,7 @@ func (db *Db) GetAllTodos() []models.Todo {
 	t := models.Todo{}
 
 	for rows.Next() {
-		rows.Scan(&t.Id, &t.Description, &t.Selected, &t.Trash, &t.CreatedAt)
+		rows.Scan(&t.Id, &t.Description, &t.Selected, &t.Trash, &t.Today, &t.CreatedAt)
 
 		todos = append(todos, t)
 	}
@@ -124,8 +125,28 @@ func (db *Db) GetAllTrash() []models.Todo {
 	t := models.Todo{}
 
 	for rows.Next() {
-		rows.Scan(&t.Id, &t.Description, &t.Selected, &t.Trash, &t.CreatedAt)
+		rows.Scan(&t.Id, &t.Description, &t.Selected, &t.Trash, &t.Today, &t.CreatedAt)
 
+		todos = append(todos, t)
+	}
+
+	return todos
+}
+
+func (db *Db) GetAllToday() []models.Todo {
+	todos := []models.Todo{}
+
+	query := fmt.Sprintf("SELECT * FROM %s WHERE today", FTODO_TABLE_NAME)
+
+	rows, err := db.db.Query(query)
+	if err != nil {
+		return todos
+	}
+
+	defer rows.Close()
+	t := models.Todo{}
+	for rows.Next() {
+		rows.Scan(&t.Id, &t.Description, &t.Selected, &t.Trash, &t.Today, &t.CreatedAt)
 		todos = append(todos, t)
 	}
 
@@ -307,14 +328,31 @@ func (db *Db) UpdateTrash(todo *models.Todo) bool {
 	defer stmt.Close()
 
 	_, err = stmt.Exec(todo.Trash, todo.Id)
-
 	if err != nil {
 		return err == nil
 	}
 
 	return true
+}
 
+func (db *Db) UpdateToday(todo *models.Todo) bool {
 
+	query := fmt.Sprintf(`Update %s SET today = ?
+		WHERE id=?`, FTODO_TABLE_NAME)
+
+	stmt, err := db.db.Prepare(query)
+	if err != nil {
+		return err == nil
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(todo.Today, todo.Id)
+	if err != nil {
+		return err ==nil
+	}
+
+	return true
 }
 
 /* REFERENCES:

@@ -66,7 +66,14 @@ func BindItemsToListToday(todos *services.Todos, w fyne.Window,
 }
 
 func GetTodayView(ctx *c.AppContext) *fyne.Container {
-	// create the widgets andn initial containers for views
+
+	todos := services.TodayTodosFromDb(ctx.Db)
+
+	list := widget.NewListWithData(
+		todos,
+		RenderListItemsToday,
+		BindItemsToListToday(&todos, ctx.GetWindow()),
+		)
 	//navigate buttons should have a variable that is tracked that is the last area that they were in and that's where they travel to
 	navigateBackBtn := navigateBtn(ctx, theme.NavigateBackIcon(), c.List, "")
 	settingsBtn := navigateBtn(ctx, theme.SettingsIcon(), c.Settings, "")
@@ -78,6 +85,6 @@ func GetTodayView(ctx *c.AppContext) *fyne.Container {
 		container.NewBorder(nil, bottomCont, nil, nil),
 		nil,
 		nil,
-		nil,
+		list,
 		)
 }
