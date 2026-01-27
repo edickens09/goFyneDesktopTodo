@@ -49,15 +49,6 @@ func renderListItem() fyne.CanvasObject {
 		widget.NewButtonWithIcon("", theme.ContentAddIcon(), nil),
 		widget.NewButtonWithIcon("", theme.DeleteIcon(), nil),
 		)
-/*	return container.NewBorder(
-		nil, nil, // Top & bottom
-		// ↓ left of the border ↓
-		widget.NewCheck("", nil), // func(b bool) {}
-		// ↓ right of the border ↓
-		widget.NewButtonWithIcon("", theme.DeleteIcon(), nil),
-		// take the rest of the space ↓
-		widget.NewLabel(""),
-	) */	
 }
 
 // This is where we take the base List item and then Bind the data to that singular item
@@ -65,6 +56,10 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
 
 	return func(di binding.DataItem, co fyne.CanvasObject) {
+		//creating the binding variables to be used later in the function
+		labelData := binding.NewString()
+		checkData := binding.NewBool()
+
 		t := models.NewTodoFromDataItem(di)
 		ctr, _ := co.(*fyne.Container)
 
@@ -95,17 +90,20 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 				fmt.Printf("The ToDo %q has been successfully added to today\n", t.Description)
 			}
 		}
-		
+
 		//binding the label to the todo item descriptin
 		if (len(t.Description) > 60) {
-			ellip := t.Description[:60] + "..."
-			l.Bind(binding.BindString(&ellip))
+			labelData.Set(t.Description[:60] + "...")
+			l.Bind(labelData)	
 		}else {
-			l.Bind(binding.BindString(&t.Description))
+			labelData.Set(t.Description)
+			l.Bind(labelData)
 		}
+
+		//binding the bool to the check box todo item selection
+		checkData.Set(t.Selected)
+		c.Bind(checkData)
 		
-		//binding the check to the todo item selection
-		c.Bind(binding.BindBool(&t.Selected))
 		
 		//this is where the todo item show is being updated based on whether the button is clicked
 		c.OnChanged = func(b bool) {

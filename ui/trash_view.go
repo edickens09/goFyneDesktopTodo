@@ -33,6 +33,9 @@ func BindItemsToListTrash(todos *services.Todos, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
 
 	return func(di binding.DataItem, co fyne.CanvasObject) {
+		//setting up bindeing variables so that they can be used later for binding
+		labelData := binding.NewString()
+		checkData := binding.NewBool()
 
 		t := models.NewTodoFromDataItem(di)
 		ctr, _ := co.(*fyne.Container)
@@ -69,17 +72,19 @@ func BindItemsToListTrash(todos *services.Todos, w fyne.Window,
 		
 		/* I think there is a better way impliment this that is more dynamic but this seems 
 		to work on my laptop in half screen mode so that is good enough for now */
+		checkData.Set(t.Selected)
 		if (len(t.Description) > 60) {
+			labelData.Set(t.Description[:60] + "...")
 
-			ellip := t.Description[:60] +"..."
 
-			l.Bind(binding.BindString(&ellip))
+			l.Bind(labelData)
 
 		}else {
-			l.Bind(binding.BindString(&t.Description))
+			labelData.Set(t.Description)
+			l.Bind(labelData)
 		}
 
-		c.Bind(binding.BindBool(&t.Selected))
+		c.Bind(checkData)
 
 		//l.Truncation = fyne.TextTruncateEllipsis
 		c.OnChanged = func(b bool) {

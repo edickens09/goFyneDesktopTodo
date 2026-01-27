@@ -32,6 +32,9 @@ func RenderListItemsToday() fyne.CanvasObject {
 func BindItemsToListToday(todos *services.Todos, w fyne.Window,
 ) func (di binding.DataItem, co fyne.CanvasObject) {
 	return func (di binding.DataItem, co fyne.CanvasObject) {
+		//setting up binding variables so that can be used later
+		labelData := binding.NewString()
+		checkData := binding.NewBool()
 
 		t := models.NewTodoFromDataItem(di)
 		ctr, _ := co.(*fyne.Container)
@@ -60,8 +63,10 @@ func BindItemsToListToday(todos *services.Todos, w fyne.Window,
 			}, w)
 		}
 
-		l.Bind(binding.BindString(&t.Description))
-		c.Bind(binding.BindBool(&t.Selected))
+		labelData.Set(t.Description)
+		checkData.Set(t.Selected)
+		l.Bind(labelData)
+		c.Bind(checkData)
 	}
 }
 
