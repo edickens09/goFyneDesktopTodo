@@ -165,6 +165,7 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		// but this time we get the actual DataItem we need to cast
 		bindDataToList(&todos, ctx.GetWindow()),
 	)
+	// when moving to a tree function this will need to be updated
 	list.OnSelected = func(id widget.ListItemID) {
 		if configs.EnableLogger {
 			fmt.Printf("Selected item: %d\n", id)

@@ -136,7 +136,7 @@ func (db *Db) GetAllTrash() []models.Todo {
 func (db *Db) GetAllToday() []models.Todo {
 	todos := []models.Todo{}
 
-	query := fmt.Sprintf("SELECT * FROM %s WHERE today", FTODO_TABLE_NAME)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE today AND NOT trash", FTODO_TABLE_NAME)
 
 	rows, err := db.db.Query(query)
 	if err != nil {

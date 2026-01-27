@@ -9,8 +9,10 @@ import (
 	"fyne.io/fyne/v2/data/binding"
 )
 
+// TODO change from list to Tree for subitems
 type Todos struct {
 	binding.UntypedList // composition
+//	binding.UntypedTree
 	Dbase               db.IDb
 }
 
@@ -35,6 +37,7 @@ func TodayTodosFromDb(db db.IDb) Todos {
 func newTodos(db db.IDb, todos []models.Todo) Todos {
 	t := Todos{
 		binding.NewUntypedList(),
+	//	binding.NewUntypedTree(),
 		db,
 	}
 
@@ -55,9 +58,13 @@ func (t *Todos) Add(todo *models.Todo) {
 	}
 
 	t.Prepend(todo)
+	
 }
 
-func (t *Todos) All() []*models.Todo {
+// This function doesn't seem to be used currently, I will leave it
+// for the time being
+
+/*func (t *Todos) All() []*models.Todo {
 	result := []*models.Todo{}
 	for i := 0; i < t.Length(); i++ {
 		di, err := t.GetItem(i)
@@ -68,7 +75,7 @@ func (t *Todos) All() []*models.Todo {
 	}
 
 	return result
-}
+}*/
 
 func (t *Todos) Drop() {
 	t.Dbase.Drop()
