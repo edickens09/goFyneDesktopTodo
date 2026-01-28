@@ -265,16 +265,18 @@ func (db *Db) ImportData() bool {
 		return err == nil
 	}
 
-	sqlStr := fmt.Sprintf("INSERT INTO %s(id, description, selected, created_at) VALUES ", FTODO_TABLE_NAME)
+	sqlStr := fmt.Sprintf("INSERT INTO %s(id, description, selected, trash, today, created_at) VALUES ", FTODO_TABLE_NAME)
 	vals := []interface{}{}
 
 	for _, row := range rowsMap {
-		sqlStr += "(?, ?, ?, ?),"
+		sqlStr += "(?, ?, ?, ?, ?, ?),"
 		vals = append(
 			vals,
 			uuid.NewString(),
 			row["description"],
 			convertToBool(row["selected"]),
+			convertToBool(row["trash"]),
+			convertToBool(row["today"]),
 			convertToDatetime(row["created_at"]),
 		)
 	}

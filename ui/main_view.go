@@ -18,28 +18,7 @@ import (
 	c "goFyneDesktopTodo/internal/context"
 )
 
-/*
-type tappableEntry struct {
-	widget.Entry
-}
-
-func newTappableEntry() *tappableEntry {
-	e := &tappableEntry{
-		widget.Entry{
-			PlaceHolder: "What should I do with this?",
-			TextStyle:   fyne.TextStyle{Monospace: true},
-		},
-	}
-	e.ExtendBaseWidget(e)
-
-	return e
-}
-
-func (e *tappableEntry) Tapped(_ *fyne.PointEvent) {
-	e.Disable()
-}
-*/
-
+// TODO create renderTreeSubItem so they can be different
 func renderListItem() fyne.CanvasObject {
 
 	return container.NewHBox(
@@ -154,7 +133,8 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 	settingsBtn := navigateBtn(ctx, theme.SettingsIcon(), c.Settings, "")
 
 	bottomCont := container.NewBorder(nil, nil, settingsBtn, trashBtn, todayBtn)
-
+	//creating tree to be generated moving from list for sub items
+	//tree := widget.NewTreeWithData(
 	list := widget.NewListWithData(
 		// the binding.List type
 		todos,
@@ -165,14 +145,13 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		// but this time we get the actual DataItem we need to cast
 		bindDataToList(&todos, ctx.GetWindow()),
 	)
-	// when moving to a tree function this will need to be updated
+	// need to have tree.OnSelected
 	list.OnSelected = func(id widget.ListItemID) {
 		if configs.EnableLogger {
 			fmt.Printf("Selected item: %d\n", id)
 		}
 	}
 
-	// the directions are not important the order is important
 	return container.NewBorder(
 		nil, // TOP of the container
 		// this will be a the BOTTOM of the container
@@ -185,6 +164,8 @@ func GetMainView(ctx *c.AppContext) *fyne.Container {
 		),
 		nil,  // Left
 		nil,  // Right
+		//adding tree here for when change over happens
+		//tree,
 		list, // the rest will take all the rest of the space
 	)
 }

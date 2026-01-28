@@ -10,6 +10,7 @@ import (
 )
 
 // TODO change from list to Tree for subitems
+// TODO have seperate struct for an untypedList and Tree
 type Todos struct {
 	binding.UntypedList // composition
 //	binding.UntypedTree
@@ -28,6 +29,7 @@ func TrashTodosFromDb(db db.IDb) Todos {
 	return newTodos(db, trashList)
 }
 
+//might need a different on so that it shows as a list rather than a tree
 func TodayTodosFromDb(db db.IDb) Todos {
 	todayList := db.GetAllToday()
 
