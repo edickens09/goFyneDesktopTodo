@@ -31,7 +31,7 @@ func renderListItem() fyne.CanvasObject {
 }
 
 // This is where we take the base List item and then Bind the data to that singular item
-func bindDataToList(todos *services.Todos, w fyne.Window,
+func bindDataToList(todos *services.TodosList, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
 
 	return func(di binding.DataItem, co fyne.CanvasObject) {
@@ -92,7 +92,7 @@ func bindDataToList(todos *services.Todos, w fyne.Window,
 	}
 }
 // Function created so that OnSubmit and Add button add information in the same way.
-func AddToList(todos *services.Todos, input *widget.Entry) {
+func AddToList(todos *services.TodosList, input *widget.Entry) {
 	t := models.NewTodo(input.Text)
 	todos.Add(&t)
 	input.SetText("")

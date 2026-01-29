@@ -29,7 +29,7 @@ func RenderListItemsToday() fyne.CanvasObject {
 		)
 }
 
-func BindItemsToListToday(todos *services.Todos, w fyne.Window,
+func BindItemsToListToday(todos *services.TodosList, w fyne.Window,
 ) func (di binding.DataItem, co fyne.CanvasObject) {
 	return func (di binding.DataItem, co fyne.CanvasObject) {
 		//setting up binding variables so that can be used later

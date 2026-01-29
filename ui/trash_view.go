@@ -29,7 +29,7 @@ func RenderListItemsTrash() fyne.CanvasObject {
 		)
 }
 
-func BindItemsToListTrash(todos *services.Todos, w fyne.Window,
+func BindItemsToListTrash(todos *services.TodosList, w fyne.Window,
 ) func(di binding.DataItem, co fyne.CanvasObject) {
 
 	return func(di binding.DataItem, co fyne.CanvasObject) {

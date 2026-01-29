@@ -11,35 +11,34 @@ import (
 
 // TODO change from list to Tree for subitems
 // TODO have seperate struct for an untypedList and Tree
-type Todos struct {
+type TodosList struct {
 	binding.UntypedList // composition
-//	binding.UntypedTree
 	Dbase               db.IDb
 }
 
-func NewTodosFromDb(db db.IDb) Todos {
+
+func NewTodosFromDb(db db.IDb) TodosList {
 	todoList := db.GetAllTodos()
 
 	return newTodos(db, todoList)
 }
 
-func TrashTodosFromDb(db db.IDb) Todos {
+func TrashTodosFromDb(db db.IDb) TodosList {
 	trashList := db.GetAllTrash()
 
 	return newTodos(db, trashList)
 }
 
 //might need a different on so that it shows as a list rather than a tree
-func TodayTodosFromDb(db db.IDb) Todos {
+func TodayTodosFromDb(db db.IDb) TodosList {
 	todayList := db.GetAllToday()
 
 	return newTodos(db, todayList)
 }
 
-func newTodos(db db.IDb, todos []models.Todo) Todos {
-	t := Todos{
+func newTodos(db db.IDb, todos []models.Todo) TodosList {
+	t := TodosList{
 		binding.NewUntypedList(),
-	//	binding.NewUntypedTree(),
 		db,
 	}
 
@@ -50,7 +49,7 @@ func newTodos(db db.IDb, todos []models.Todo) Todos {
 	return t
 }
 
-func (t *Todos) Add(todo *models.Todo) {
+func (t *TodosList) Add(todo *models.Todo) {
 	// If created_at is the value 'zero' of time.Time,
 	// we insert the data into the DB
 	var dt *time.Time
@@ -66,7 +65,7 @@ func (t *Todos) Add(todo *models.Todo) {
 // This function doesn't seem to be used currently, I will leave it
 // for the time being
 
-/*func (t *Todos) All() []*models.Todo {
+func (t *TodosList) All() []*models.Todo {
 	result := []*models.Todo{}
 	for i := 0; i < t.Length(); i++ {
 		di, err := t.GetItem(i)
@@ -77,9 +76,9 @@ func (t *Todos) Add(todo *models.Todo) {
 	}
 
 	return result
-}*/
+}
 
-func (t *Todos) Drop() {
+func (t *TodosList) Drop() {
 	t.Dbase.Drop()
 
 	// list, _ := t.Get()

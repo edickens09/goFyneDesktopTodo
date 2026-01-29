@@ -27,6 +27,7 @@ func NewTodoFromDataItem(di binding.DataItem) *Todo {
 	return v.(*Todo)
 }
 
+// This might be removable at this point
 func (t Todo) String() string {
 	done := "❌"
 	if t.Selected {

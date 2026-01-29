@@ -28,7 +28,7 @@ type Db struct {
 func MakeDb(DbName string) Db {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatalf("🔥 user directory not available: %s\n", err.Error())
+		log.Fatalf("user directory not available: %s\n", err.Error())
 	}
 	// creating the address of the file where the DB
 	// will be saved as a hidden file in the user folder
@@ -37,7 +37,7 @@ func MakeDb(DbName string) Db {
 	// Init SQLite3 database
 	db, err := sql.Open("sqlite3", dDAddress)
 	if err != nil {
-		log.Fatalf("🔥 failed to connect to the DB: %s\n", err)
+		log.Fatalf("failed to connect to the DB: %s\n", err)
 	}
 
 	sqlStr := fmt.Sprintf(
@@ -53,7 +53,7 @@ func MakeDb(DbName string) Db {
 
 	_, err = db.Exec(sqlStr)
 	if err != nil {
-		log.Fatalf("🔥 failed to create table: %s\n", err)
+		log.Fatalf("failed to create table: %s\n", err)
 	}
 
 	return Db{db}
@@ -62,7 +62,7 @@ func MakeDb(DbName string) Db {
 func (db *Db) Close() {
 	err := db.db.Close()
 	if err != nil {
-		log.Fatalf("🔥 failed to close the connection DB: %s\n", err)
+		log.Fatalf("failed to close the connection DB: %s\n", err)
 	}
 }
 

@@ -13,6 +13,7 @@ import (
 	"goFyneDesktopTodo/internal/context"
 )
 
+// TODO create common function for render items
 func h1(text string) *canvas.Text {
 	txt := canvas.NewText(text, color.RGBA{61, 133, 255, 255})
 	txt.TextSize = 20
